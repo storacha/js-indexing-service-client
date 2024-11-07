@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/storacha/js-indexing-service-client/compare/v1.0.0...v1.1.0) (2024-11-07)
+
+
+### Features
+
+* query result create and archive ([#2](https://github.com/storacha/js-indexing-service-client/issues/2)) ([e6d5fc5](https://github.com/storacha/js-indexing-service-client/commit/e6d5fc54e96dc9fd2f1bb16d82af75db04405b6d))
+
 ## 1.0.0 (2024-11-06)
 
 
