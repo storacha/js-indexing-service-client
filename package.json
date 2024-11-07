@@ -22,6 +22,10 @@
     "./errors": {
       "import": "./src/errors.js",
       "types": "./dist/src/errors.d.ts"
+    },
+    "./query-result": {
+      "import": "./src/query-result.js",
+      "types": "./dist/src/query-result.d.ts"
     }
   },
   "dependencies": {
