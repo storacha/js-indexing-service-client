@@ -2,9 +2,9 @@ import { MultihashDigest, Link } from 'multiformats'
 import { Delegation, Failure, Result, Principal, IPLDView, IPLDBlock } from '@ucanto/interface'
 import { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat } from '@storacha/blob-index/types'
 
-export { MultihashDigest, Link }
-export { Delegation, Failure, Result, Principal, IPLDView, IPLDBlock }
-export { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat }
+export type { MultihashDigest, Link }
+export type { Delegation, Failure, Result, Principal, IPLDView, IPLDBlock }
+export type { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat }
 
 export interface IndexingServiceClient {
   queryClaims (q: Query): Promise<Result<QueryOk, QueryError>>
