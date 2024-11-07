@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/storacha/js-indexing-service-client/compare/v1.1.1...v1.1.2) (2024-11-07)
+
+
+### Bug Fixes
+
+* use export type ([0dc1fed](https://github.com/storacha/js-indexing-service-client/commit/0dc1fedf0faee388e64c901d12c9938039325624))
+
 ## [1.1.1](https://github.com/storacha/js-indexing-service-client/compare/v1.1.0...v1.1.1) (2024-11-07)
 
 
