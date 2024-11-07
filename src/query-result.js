@@ -77,7 +77,10 @@ export const view = async ({ root, blocks }) => {
 
 /**
  * @typedef {string} ContextID
- * @param {{ claims: API.Delegation[], indexes: Map<ContextID, API.ShardedDAGIndexView> }} param
+ * @param {{
+ *   claims?: API.Delegation[]
+ *   indexes?: Map<ContextID, API.ShardedDAGIndexView>
+ * }} param
  */
 export const from = async ({ claims, indexes }) => {
   const blocks = new Map()
@@ -89,24 +92,28 @@ export const from = async ({ claims, indexes }) => {
   }
   const data = { claims: new Map(), indexes: new Map() }
 
-  for (const claim of claims) {
-    rootData['index/query/result@0.1'].claims.push(claim.link())
-    for (const block of claim.iterateIPLDBlocks()) {
-      blocks.set(block.cid.toString(), block)
+  if (claims) {
+    for (const claim of claims) {
+      rootData['index/query/result@0.1'].claims.push(claim.link())
+      for (const block of claim.iterateIPLDBlocks()) {
+        blocks.set(block.cid.toString(), block)
+      }
+      data.claims.set(claim.link().toString(), claim)
     }
-    data.claims.set(claim.link().toString(), claim)
   }
 
-  for (const [contextID, index] of indexes.entries()) {
-    const result = await index.archive()
-    if (!result.ok) {
-      return result
+  if (indexes) {
+    for (const [contextID, index] of indexes.entries()) {
+      const result = await index.archive()
+      if (!result.ok) {
+        return result
+      }
+      const digest = await sha256.digest(result.ok)
+      const link = createLink(0x0202, digest)
+      rootData['index/query/result@0.1'].indexes[contextID] = link
+      blocks.set(link.toString(), { cid: link, bytes: result.ok })
+      data.indexes.set(link.toString(), index)
     }
-    const digest = await sha256.digest(result.ok)
-    const link = createLink(0x0202, digest)
-    rootData['index/query/result@0.1'].indexes[contextID] = link
-    blocks.set(link.toString(), { cid: link, bytes: result.ok })
-    data.indexes.set(link.toString(), index)
   }
 
   const rootBytes = CBOR.encode(rootData)
