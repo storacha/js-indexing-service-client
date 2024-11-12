@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/storacha/js-indexing-service-client/compare/v1.1.2...v1.1.3) (2024-11-12)
+
+
+### Bug Fixes
+
+* index and claims are optional ([6a8a345](https://github.com/storacha/js-indexing-service-client/commit/6a8a345c68a8e75bbe4daadd59d600cb0dda9a39))
+
 ## [1.1.2](https://github.com/storacha/js-indexing-service-client/compare/v1.1.1...v1.1.2) (2024-11-07)
 
 
