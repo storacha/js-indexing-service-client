@@ -13,13 +13,16 @@ import { sha256 } from 'multiformats/hashes/sha2'
 const QueryResultSchema = z
   .object({
     'index/query/result@0.1': z.object({
-      claims: z
-        .array(
-          z.instanceof(CID).transform(cid => /** @type {API.Link} */ (cid))
-        ),
-      indexes: z
-        .record(z.string(), z.instanceof(CID))
-        .transform((record) => Object.values(record)),
+      claims: z.optional(
+        z.array(
+          z.instanceof(CID)
+            .transform(cid => /** @type {API.Link} */ (cid))
+        )
+      ),
+      indexes: z.optional(
+        z.record(z.string(), z.instanceof(CID))
+          .transform((record) => Object.values(record))
+      )
     }),
   })
   .transform((object) => object['index/query/result@0.1'])
@@ -49,7 +52,7 @@ export const view = async ({ root, blocks }) => {
   }
 
   const claims = new Map()
-  for (const root of parsed.claims) {
+  for (const root of parsed.claims ?? []) {
     let claim
     try {
       claim = Delegation.view({ root, blocks })
@@ -60,7 +63,7 @@ export const view = async ({ root, blocks }) => {
   }
 
   const indexes = new Map()
-  for (const link of parsed.indexes) {
+  for (const link of parsed.indexes ?? []) {
     const block = blocks.get(link.toString())
     if (!block) {
       return error(new DecodeError(`missing index: ${link}`))
