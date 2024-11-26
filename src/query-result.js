@@ -112,7 +112,7 @@ export const from = async ({ claims, indexes }) => {
         return result
       }
       const digest = await sha256.digest(result.ok)
-      const link = createLink(0x0202, digest)
+      const link = createLink(CAR.code, digest)
       rootData['index/query/result@0.1'].indexes[contextID] = link
       blocks.set(link.toString(), { cid: link, bytes: result.ok })
       data.indexes.set(link.toString(), index)
