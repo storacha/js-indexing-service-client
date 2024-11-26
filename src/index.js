@@ -33,9 +33,7 @@ export class Client {
     hashes.forEach((hash) =>
       url.searchParams.append('multihash', base58btc.encode(hash.bytes))
     )
-    match.subject.forEach((space) =>
-      url.searchParams.append('spaces', space.did())
-    )
+    match.subject.forEach((space) => url.searchParams.append('spaces', space))
 
     if (!hashes.length) {
       return error(new InvalidQueryError('missing multihashes in query'))

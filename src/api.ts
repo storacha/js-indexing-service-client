@@ -1,9 +1,9 @@
 import { MultihashDigest, Link } from 'multiformats'
-import { Delegation, Failure, Result, Principal, IPLDView, IPLDBlock } from '@ucanto/interface'
+import { Delegation, Failure, Result, DID, IPLDView, IPLDBlock } from '@ucanto/interface'
 import { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat } from '@storacha/blob-index/types'
 
 export type { MultihashDigest, Link }
-export type { Delegation, Failure, Result, Principal, IPLDView, IPLDBlock }
+export type { Delegation, Failure, Result, DID, IPLDView, IPLDBlock }
 export type { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat }
 
 export interface IndexingServiceClient {
@@ -14,7 +14,7 @@ export interface IndexingServiceClient {
  * Match narrows parameters for locating providers/claims for a set of multihashes.
  */
 export interface Match {
-  subject: Principal[]
+  subject: DID[]
 }
 
 /**
