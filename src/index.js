@@ -24,7 +24,7 @@ export class Client {
     fetch = globalThis.fetch.bind(globalThis),
   } = {}) {
     this.#serviceURL = serviceURL
-    this.#fetch = (...args) => fetch(...args)
+    this.#fetch = fetch
   }
 
   /**
