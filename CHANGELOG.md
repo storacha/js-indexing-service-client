@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.0.0](https://github.com/storacha/js-indexing-service-client/compare/v1.1.3...v2.0.0) (2024-11-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* A few things to make egress work ([#7](https://github.com/storacha/js-indexing-service-client/issues/7))
+* Match with `DID`s, not `Principal`s
+
+### Features
+
+* A few things to make egress work ([#7](https://github.com/storacha/js-indexing-service-client/issues/7)) ([aabacb9](https://github.com/storacha/js-indexing-service-client/commit/aabacb9acc37a9a1314a8b5f78f0c149efdca8cd))
+* Match with `DID`s, not `Principal`s ([674d22f](https://github.com/storacha/js-indexing-service-client/commit/674d22fc94580dcf3aebb15bf69b1bd02c818ad1))
+
+
+### Bug Fixes
+
+* Make completely sure `fetch` works ([6bf83ac](https://github.com/storacha/js-indexing-service-client/commit/6bf83ac9c0441b6fb5dff144e87e7feb0cafed89))
+
 ## [1.1.3](https://github.com/storacha/js-indexing-service-client/compare/v1.1.2...v1.1.3) (2024-11-12)
 
 
