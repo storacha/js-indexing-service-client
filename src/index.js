@@ -10,6 +10,7 @@ const CLAIMS_PATH = '/claims'
 
 /** @implements {IndexingServiceClient} */
 export class Client {
+  /** @type {typeof globalThis.fetch} */
   #fetch
   #serviceURL
 
@@ -18,10 +19,12 @@ export class Client {
    * @param {URL} [options.serviceURL]
    * @param {typeof globalThis.fetch} [options.fetch]
    */
-  constructor (options) {
-    this.#serviceURL = options?.serviceURL ?? new URL(SERVICE_URL)
-    /** @type {typeof globalThis.fetch} */
-    this.#fetch = options?.fetch ?? globalThis.fetch.bind(globalThis)
+  constructor({
+    serviceURL = new URL(SERVICE_URL),
+    fetch = globalThis.fetch.bind(globalThis),
+  } = {}) {
+    this.#serviceURL = serviceURL
+    this.#fetch = fetch
   }
 
   /**
@@ -33,9 +36,7 @@ export class Client {
     hashes.forEach((hash) =>
       url.searchParams.append('multihash', base58btc.encode(hash.bytes))
     )
-    match.subject.forEach((space) =>
-      url.searchParams.append('spaces', space.did())
-    )
+    match.subject.forEach((space) => url.searchParams.append('spaces', space))
 
     if (!hashes.length) {
       return error(new InvalidQueryError('missing multihashes in query'))
