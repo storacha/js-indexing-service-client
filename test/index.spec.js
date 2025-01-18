@@ -6,7 +6,7 @@ import * as Digest from 'multiformats/hashes/digest'
 import { base58btc } from 'multiformats/bases/base58'
 import { equals } from 'multiformats/bytes'
 import { Client } from '../src/index.js'
-
+import { contentMultihash } from '@web3-storage/content-claims/client'
 /** @import { Link } from '../src/api.js' */
 
 describe('indexing service client', () => {
@@ -22,65 +22,44 @@ describe('indexing service client', () => {
     assert(!result.error)
 
     const indexClaim = [...result.ok.claims.values()].find(c => {
-      return c.capabilities[0].can === 'assert/index'
+      return c.type === 'assert/index'
     })
     assert(indexClaim)
 
-    const indexCaveats =
-      /** @type {{ content: Link, index: Link }} */
-      (indexClaim.capabilities[0].nb)
-    assert(equals(digest.bytes, indexCaveats.content.multihash.bytes))
+    assert(equals(digest.bytes, contentMultihash(indexClaim).bytes))
 
     // index should be included in results
-    const index = result.ok.indexes.get(indexCaveats.index.toString())
+    const index = result.ok.indexes.get(indexClaim.index.toString())
     assert(index)
 
     // find location claim for the index
-    const indexLocationCommitment = [...result.ok.claims.values()].find(c => {
-      if (c.capabilities[0].can === 'assert/location') {
-        const locationCaveats =
-          /** @type {{ content: { digest: Uint8Array } } }} */
-          (c.capabilities[0].nb)
-        return equals(locationCaveats.content.digest, indexCaveats.index.multihash.bytes)
-      }
-      return false
-    })
+    const indexLocationCommitment = [...result.ok.claims.values()].filter(c => {
+      return c.type === 'assert/location'
+    }).find(c => equals(contentMultihash(c).bytes, indexClaim.index.multihash.bytes))
     assert(indexLocationCommitment)
 
-    const indexLocationCaveats =
-      /** @type {{ content: Link, location: string[] }} */
-      (indexLocationCommitment.capabilities[0].nb)
-    assert(indexLocationCaveats.location)
+    assert(indexLocationCommitment.location)
 
     assert.equal(index.shards.size, 1)
 
     // find location claim for the shard
     const [[shard, slices]] = index.shards.entries()
-    const shardLocationCommitment = [...result.ok.claims.values()].find(c => {
-      if (c.capabilities[0].can === 'assert/location') {
-        const locationCaveats =
-          /** @type {{ content: { digest: Uint8Array } } }} */
-          (c.capabilities[0].nb)
-        return equals(locationCaveats.content.digest, shard.bytes)
-      }
-      return false
-    })
+    const shardLocationCommitment = [...result.ok.claims.values()].filter(c => {
+      return c.type === 'assert/location'
+    }).find(c => equals(contentMultihash(c).bytes, shard.bytes))
     assert(shardLocationCommitment)
 
-    const shardLocationCaveats =
-      /** @type {{ content: Link, location: string[] }} */
-      (shardLocationCommitment.capabilities[0].nb)
-    assert(shardLocationCaveats.location)
+    assert(shardLocationCommitment.location)
 
     const position = slices.get(digest)
     assert(position)
     
     console.log()
     console.log(`Results for ${digestString}:`)
-    console.log(`  Index: ${indexCaveats.index}`)
-    console.log(`    Location: ${indexLocationCaveats.location}`)
+    console.log(`  Index: ${indexClaim.index}`)
+    console.log(`    Location: ${indexLocationCommitment.location}`)
     console.log(`  Shard: ${base58btc.encode(shard.bytes)}`)
-    console.log(`    Location: ${indexLocationCaveats.location}`)
+    console.log(`    Location: ${shardLocationCommitment.location}`)
     console.log(`    Position: ${position[0]}-${position[0]+position[1]}`)
     console.log()
   })

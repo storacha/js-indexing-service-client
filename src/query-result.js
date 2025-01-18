@@ -1,31 +1,24 @@
 /** @import * as API from './api.js' */
 import * as CBOR from '@ipld/dag-cbor'
-import { CID } from 'multiformats/cid'
 import { create as createLink } from 'multiformats/link'
-import { z } from 'zod'
-import { ok, error } from '@ucanto/core'
+import { ok, error, Schema, DAG, Delegation } from '@ucanto/core'
 import * as CAR from '@ucanto/core/car'
-import * as Delegation from '@ucanto/core/delegation'
 import * as ShardedDAGIndex from '@storacha/blob-index/sharded-dag-index'
 import { UnknownFormatError, DecodeError } from './errors.js'
 import { sha256 } from 'multiformats/hashes/sha2'
+import { decodeDelegation } from '@web3-storage/content-claims/client'
 
-const QueryResultSchema = z
-  .object({
-    'index/query/result@0.1': z.object({
-      claims: z.optional(
-        z.array(
-          z.instanceof(CID)
-            .transform(cid => /** @type {API.Link} */ (cid))
-        )
-      ),
-      indexes: z.optional(
-        z.record(z.string(), z.instanceof(CID))
-          .transform((record) => Object.values(record))
-      )
-    }),
-  })
-  .transform((object) => object['index/query/result@0.1'])
+
+export const version = 'index/query/result@0.1'
+
+export const QueryResultSchema = Schema.variant({
+  [version]: Schema.struct({
+    /** claims map */
+    claims: Schema.array(Schema.link()).optional(),
+    /** Shards the DAG can be found in. */
+    indexes: Schema.dictionary({ value: Schema.link() }).optional(),
+  }),
+})
 
 /**
  * @param {{ root: API.Link, blocks: Map<string, API.IPLDBlock> }} arg
@@ -45,43 +38,52 @@ export const create = async ({ root, blocks }) => {
  */
 export const view = async ({ root, blocks }) => {
   let parsed
+  let localVersion
   try {
-    parsed = QueryResultSchema.parse(CBOR.decode(root.bytes))
+    [localVersion, parsed] = QueryResultSchema.match(CBOR.decode(root.bytes))
   } catch (/** @type {any} */ err) {
     return error(new UnknownFormatError(`parsing root block: ${err.message}`))
   }
 
-  const claims = new Map()
-  for (const root of parsed.claims ?? []) {
-    let claim
-    try {
-      claim = Delegation.view({ root, blocks })
-    } catch (/** @type {any} */ err) {
-      return error(new DecodeError(`decoding claim: ${root}: ${err.message}`))
-    }
-    claims.set(root.toString(), claim)
-  }
+  switch (localVersion) {
+    case version:
+      const claims = new Map()
+      for (const root of parsed.claims ?? []) {
+        let claim
+        try {
+          claim = await decodeDelegation(Delegation.view({ root: /** @type {API.Link<unknown, number, 1>} */(root), blocks}))
+        } catch (/** @type {any} */ err) {
+          return error(new DecodeError(`decoding claim: ${root}: ${err.message}`))
+        }
+        claims.set(root.toString(), claim)
+      }
+    
 
-  const indexes = new Map()
-  for (const link of parsed.indexes ?? []) {
-    const block = blocks.get(link.toString())
-    if (!block) {
-      return error(new DecodeError(`missing index: ${link}`))
+    const indexes = new Map()
+    for (const link of Object.values(parsed.indexes ?? [])) {
+      const block = blocks.get(link.toString())
+      if (!block) {
+        return error(new DecodeError(`missing index: ${link}`))
+      }
+      const { ok: index, error: err } = ShardedDAGIndex.extract(block.bytes)
+      if (!index) {
+        return error(new DecodeError(`extracting index: ${link}: ${err.message}`))
+      } 
+      indexes.set(link.toString(), index)
     }
-    const { ok: index, error: err } = ShardedDAGIndex.extract(block.bytes)
-    if (!index) {
-      return error(new DecodeError(`extracting index: ${link}: ${err.message}`))
-    } 
-    indexes.set(link.toString(), index)
-  }
 
-  return ok(new QueryResult({ root, blocks, data: { claims, indexes } }))
+    return ok(new QueryResult({ root, blocks, data: { claims, indexes } }))
+
+    default:
+      return error(new UnknownFormatError(`unknown query result version: ${localVersion}`))
+  }
+  
 }
 
 /**
  * @typedef {string} ContextID
  * @param {{
- *   claims?: API.Delegation[]
+ *   claims?: API.Claim[]
  *   indexes?: Map<ContextID, API.ShardedDAGIndexView>
  * }} param
  */
@@ -97,11 +99,11 @@ export const from = async ({ claims, indexes }) => {
 
   if (claims) {
     for (const claim of claims) {
-      rootData['index/query/result@0.1'].claims.push(claim.link())
-      for (const block of claim.iterateIPLDBlocks()) {
+      rootData['index/query/result@0.1'].claims.push(claim.delegation().link())
+      for (const block of claim.delegation().iterateIPLDBlocks()) {
         blocks.set(block.cid.toString(), block)
       }
-      data.claims.set(claim.link().toString(), claim)
+      data.claims.set(claim.delegation().link().toString(), claim)
     }
   }
 
@@ -138,7 +140,7 @@ class QueryResult {
    *   root: API.IPLDBlock
    *   blocks: Map<string, API.IPLDBlock>
    *   data: {
-   *     claims: Map<string, API.Delegation>
+   *     claims: Map<string, API.Claim>
    *     indexes: Map<string, API.ShardedDAGIndex>
    *   }
    * }} param
