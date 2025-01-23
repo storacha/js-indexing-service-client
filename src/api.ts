@@ -19,12 +19,15 @@ export interface Match {
   subject: DID[]
 }
 
+export type Kind = "standard" | "index_or_location" | "location"
+
 /**
  * Query is a query for several multihashes.
  */
 export interface Query {
   hashes: MultihashDigest[]
   match?: Match
+  kind?: Kind
 }
 
 export interface QueryOk extends QueryResult {}
