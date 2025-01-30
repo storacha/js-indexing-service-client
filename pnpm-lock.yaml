@@ -21,8 +21,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1
       '@web3-storage/content-claims':
-        specifier: 5.1.4-rc.5
-        version: 5.1.4-rc.5
+        specifier: 5.2.0
+        version: 5.2.0
       multiformats:
         specifier: ^13.3.1
         version: 13.3.1
@@ -120,8 +120,8 @@ packages:
   '@ucanto/validator@9.0.2':
     resolution: {integrity: sha512-LxhRbDMIoLt9LYHq/Rz1WCEH8AtmdsBTS/it28Ij/A3W0zyoSwUpAUxBtXaKRh/gpbxdWmjxX+nVfFJYL//b4g==}
 
-  '@web3-storage/content-claims@5.1.4-rc.5':
-    resolution: {integrity: sha512-gVY6WpUhDmoyCI9v8gFNl0ASuChBEfbjKdub5lNsMuyr5le6DQ8D95v3o2Aa042f2qFRFdRw79ryEWJfDa8Btw==}
+  '@web3-storage/content-claims@5.2.0':
+    resolution: {integrity: sha512-FV1WIfo+lL9igjkAtHU2dl2blJfoWCWnmCAO4bhFpZD2MwojUWlVHP1t6y6qL7QU1+o7Ax9tpiAWYsb1U7Pixg==}
 
   '@web3-storage/data-segment@5.3.0':
     resolution: {integrity: sha512-zFJ4m+pEKqtKatJNsFrk/2lHeFSbkXZ6KKXjBe7/2ayA9wAar7T/unewnOcZrrZTnCWmaxKsXWqdMFy9bXK9dw==}
@@ -587,7 +587,7 @@ snapshots:
       '@ucanto/interface': 10.0.1
       multiformats: 11.0.2
 
-  '@web3-storage/content-claims@5.1.4-rc.5':
+  '@web3-storage/content-claims@5.2.0':
     dependencies:
       '@ucanto/client': 9.0.1
       '@ucanto/core': 10.1.1
