@@ -31,12 +31,13 @@ export class Client {
    * @param {Query} query
    * @returns {Promise<Result<QueryOk, QueryError>>}
    */
-  async queryClaims({ hashes = [], match = { subject: [] } }) {
+  async queryClaims({ hashes = [], match = { subject: [] }, kind = "standard" }) {
     const url = new URL(CLAIMS_PATH, this.#serviceURL)
     hashes.forEach((hash) =>
       url.searchParams.append('multihash', base58btc.encode(hash.bytes))
     )
     match.subject.forEach((space) => url.searchParams.append('spaces', space))
+    url.searchParams.append('kind', kind)
 
     if (!hashes.length) {
       return error(new InvalidQueryError('missing multihashes in query'))

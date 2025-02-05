@@ -1,10 +1,12 @@
 import { MultihashDigest, Link } from 'multiformats'
 import { Delegation, Failure, Result, DID, IPLDView, IPLDBlock } from '@ucanto/interface'
 import { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat } from '@storacha/blob-index/types'
+import { Claim } from '@web3-storage/content-claims/client/api'
 
 export type { MultihashDigest, Link }
 export type { Delegation, Failure, Result, DID, IPLDView, IPLDBlock }
 export type { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat }
+export type { Claim }
 
 export interface IndexingServiceClient {
   queryClaims (q: Query): Promise<Result<QueryOk, QueryError>>
@@ -17,18 +19,21 @@ export interface Match {
   subject: DID[]
 }
 
+export type Kind = "standard" | "index_or_location" | "location"
+
 /**
  * Query is a query for several multihashes.
  */
 export interface Query {
   hashes: MultihashDigest[]
   match?: Match
+  kind?: Kind
 }
 
 export interface QueryOk extends QueryResult {}
 
 export interface QueryResult extends IPLDView {
-  claims: Map<string, Delegation>
+  claims: Map<string, Claim>
   indexes: Map<string, ShardedDAGIndex>
   archive (): Promise<Result<Uint8Array>>
 }
