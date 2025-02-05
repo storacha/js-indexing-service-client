@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/storacha/js-indexing-service-client/compare/v2.0.0...v2.1.0) (2025-02-05)
+
+
+### Features
+
+* **api:** pass kind parameter ([abc6673](https://github.com/storacha/js-indexing-service-client/commit/abc66734f7792f87292a925abaf2d946ec445e59))
+
 ## [2.0.0](https://github.com/storacha/js-indexing-service-client/compare/v1.1.3...v2.0.0) (2024-11-29)
 
 
