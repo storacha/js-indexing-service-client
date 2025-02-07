@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/storacha/js-indexing-service-client/compare/v2.1.0...v2.1.1) (2025-02-07)
+
+
+### Bug Fixes
+
+* production URL ([#11](https://github.com/storacha/js-indexing-service-client/issues/11)) ([a250e5f](https://github.com/storacha/js-indexing-service-client/commit/a250e5fc772720a20a988c5745d7868510453123))
+
 ## [2.1.0](https://github.com/storacha/js-indexing-service-client/compare/v2.0.0...v2.1.0) (2025-02-05)
 
 
