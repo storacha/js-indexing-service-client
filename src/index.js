@@ -5,7 +5,7 @@ import { InvalidQueryError, NetworkError } from './errors.js'
 
 /** @import { IndexingServiceClient, Result, Query, QueryOk, QueryError } from './api.js' */
 
-const SERVICE_URL = 'https://indexing.storacha.network'
+const SERVICE_URL = 'https://indexer.storacha.network'
 const CLAIMS_PATH = '/claims'
 
 /** @implements {IndexingServiceClient} */
