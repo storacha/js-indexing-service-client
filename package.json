@@ -29,12 +29,12 @@
     }
   },
   "dependencies": {
-    "@ipld/dag-cbor": "^9.2.2",
-    "@storacha/blob-index": "^0.0.0",
-    "@ucanto/core": "^10.1.1",
-    "@ucanto/interface": "^10.0.1",
-    "@web3-storage/content-claims": "5.2.0",
-    "multiformats": "^13.3.1"
+    "@ipld/dag-cbor": "^9.2.3",
+    "@storacha/blob-index": "^1.0.6",
+    "@ucanto/core": "^10.4.0",
+    "@ucanto/interface": "^10.3.0",
+    "@web3-storage/content-claims": "^5.2.1",
+    "multiformats": "^13.3.6"
   },
   "devDependencies": {
     "@types/chai": "^5.0.1",
