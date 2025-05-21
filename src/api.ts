@@ -1,10 +1,10 @@
 import { MultihashDigest, Link } from 'multiformats'
-import { Delegation, Failure, Result, DID, IPLDView, IPLDBlock } from '@ucanto/interface'
+import { Delegation, Failure, Result, DID, IPLDView, IPLDBlock, UCANLink } from '@ucanto/interface'
 import { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat } from '@storacha/blob-index/types'
 import { Claim } from '@web3-storage/content-claims/client/api'
 
 export type { MultihashDigest, Link }
-export type { Delegation, Failure, Result, DID, IPLDView, IPLDBlock }
+export type { Delegation, Failure, Result, DID, IPLDView, IPLDBlock, UCANLink }
 export type { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat }
 export type { Claim }
 
