@@ -1,13 +1,12 @@
 /** @import * as API from './api.js' */
 import * as CBOR from '@ipld/dag-cbor'
 import { create as createLink } from 'multiformats/link'
-import { ok, error, Schema, DAG, Delegation } from '@ucanto/core'
+import { ok, error, Schema, Delegation } from '@ucanto/core'
 import * as CAR from '@ucanto/core/car'
 import * as ShardedDAGIndex from '@storacha/blob-index/sharded-dag-index'
 import { UnknownFormatError, DecodeError } from './errors.js'
 import { sha256 } from 'multiformats/hashes/sha2'
 import { decodeDelegation } from '@web3-storage/content-claims/client'
-
 
 export const version = 'index/query/result@0.1'
 
@@ -51,7 +50,10 @@ export const view = async ({ root, blocks }) => {
       for (const root of parsed.claims ?? []) {
         let claim
         try {
-          claim = await decodeDelegation(Delegation.view({ root: /** @type {API.Link<unknown, number, 1>} */(root), blocks}))
+          claim = await decodeDelegation(Delegation.view({
+            root: /** @type {API.UCANLink} */ (root),
+            blocks
+          }))
         } catch (/** @type {any} */ err) {
           return error(new DecodeError(`decoding claim: ${root}: ${err.message}`))
         }
