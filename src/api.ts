@@ -1,5 +1,5 @@
 import { MultihashDigest, Link, UnknownLink } from 'multiformats'
-import { Ability, BlockStore, Capability, Capabilities, Caveats, Delegation, Failure, Resource, Result, DID, IPLDView, IPLDBlock, UCANLink } from '@ucanto/interface'
+import { Ability, BlockStore, Capability, Capabilities, Caveats, Delegation, Failure, Resource, Result, DID, IPLDView, IPLDBlock, UCANLink, ServiceMethod } from '@ucanto/interface'
 import { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat } from '@storacha/blob-index/types'
 import { AssertLocation, AssertPartition, AssertInclusion, AssertIndex, AssertEquals, AssertRelation } from '@storacha/capabilities/types'
 
@@ -110,3 +110,10 @@ export type Claim =
   | IndexClaim
   | RelationClaim
   | EqualsClaim
+
+/** Indexing service accepts invocations of claims for data. */
+export interface IndexingService {
+  location: ServiceMethod<AssertLocation, {}, Failure>
+  index: ServiceMethod<AssertIndex, {}, Failure>
+  equals: ServiceMethod<AssertEquals, {}, Failure>
+}
