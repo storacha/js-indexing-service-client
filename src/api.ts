@@ -113,7 +113,8 @@ export type Claim =
 
 /** Indexing service accepts invocations of claims for data. */
 export interface IndexingService {
-  location: ServiceMethod<AssertLocation, {}, Failure>
-  index: ServiceMethod<AssertIndex, {}, Failure>
-  equals: ServiceMethod<AssertEquals, {}, Failure>
+  assert: {
+    index: ServiceMethod<AssertIndex, {}, Failure>
+    equals: ServiceMethod<AssertEquals, {}, Failure>
+  }
 }
