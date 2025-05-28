@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/storacha/js-indexing-service-client/compare/v2.1.3...v2.2.0) (2025-05-28)
+
+
+### Features
+
+* remove legacy claims ([#17](https://github.com/storacha/js-indexing-service-client/issues/17)) ([aa0cc08](https://github.com/storacha/js-indexing-service-client/commit/aa0cc082c70e0d1b76e27302911e21801ddd13a3))
+
 ## [2.1.3](https://github.com/storacha/js-indexing-service-client/compare/v2.1.2...v2.1.3) (2025-05-21)
 
 
