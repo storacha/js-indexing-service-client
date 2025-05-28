@@ -12,8 +12,8 @@ importers:
         specifier: ^9.2.3
         version: 9.2.3
       '@storacha/blob-index':
-        specifier: ^1.0.6
-        version: 1.0.6
+        specifier: 1.1.0-rc.0
+        version: 1.1.0-rc.0
       '@storacha/capabilities':
         specifier: ^1.6.0
         version: 1.6.0
@@ -78,8 +78,8 @@ packages:
     resolution: {integrity: sha512-1j6kQFb7QRru7eKN3ZDvRcP13rugwdxZqCjbiAVZfIJwgj2A65UmT4TgARXGlXgnRkORLTDTrO19ZErt7+QXgA==}
     engines: {node: ^14.21.3 || >=16}
 
-  '@storacha/blob-index@1.0.6':
-    resolution: {integrity: sha512-i0T942GU3cWI9uT2om00VRiSVypLQR47NHv97TXiDAJrZh+vT3oo2pJOjMZ9d5IDxFxDwhCN5pt/aMWLL1cj+Q==}
+  '@storacha/blob-index@1.1.0-rc.0':
+    resolution: {integrity: sha512-LTPfv0POAKbFJAem1Iz7utZzlh2auIhUZ7TQYz9YM9tZOWXwWz4oKXv6v0sXsqK5NGZsnolT5iQbNJ2f8GXZBg==}
     engines: {node: '>=16.15'}
 
   '@storacha/capabilities@1.6.0':
@@ -494,7 +494,7 @@ snapshots:
 
   '@noble/hashes@1.5.0': {}
 
-  '@storacha/blob-index@1.0.6':
+  '@storacha/blob-index@1.1.0-rc.0':
     dependencies:
       '@ipld/dag-cbor': 9.2.3
       '@storacha/capabilities': 1.6.0

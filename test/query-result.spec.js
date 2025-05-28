@@ -29,4 +29,18 @@ describe('query result', () => {
     assert.equal(extract0.ok.claims.size, extract1.ok.claims.size)
     assert.equal(extract0.ok.indexes.size, extract1.ok.indexes.size)
   })
+
+  it('from encode failure', async () => {
+    // @ts-expect-error for test
+    const res = await QueryResult.from({ claims: 'none' })
+    assert.ok(res.error)
+    assert.equal(res.error.name, 'EncodeFailure')
+  })
+
+  it('archive encode failure', async () => {
+    // @ts-expect-error for test
+    const res = await QueryResult.archive(undefined)
+    assert.ok(res.error)
+    assert.equal(res.error.name, 'EncodeFailure')
+  })
 })

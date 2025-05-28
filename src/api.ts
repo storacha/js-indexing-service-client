@@ -1,11 +1,11 @@
 import { MultihashDigest, Link, UnknownLink } from 'multiformats'
 import { Ability, BlockStore, Capability, Capabilities, Caveats, Delegation, Failure, Resource, Result, DID, IPLDView, IPLDBlock, UCANLink, ServiceMethod } from '@ucanto/interface'
-import { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat } from '@storacha/blob-index/types'
+import { DecodeFailure, EncodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat } from '@storacha/blob-index/types'
 import { AssertLocation, AssertPartition, AssertInclusion, AssertIndex, AssertEquals, AssertRelation } from '@storacha/capabilities/types'
 
 export type { MultihashDigest, Link }
 export type { Ability, BlockStore, Capability, Capabilities, Caveats, Delegation, Failure, Resource, Result, DID, IPLDView, IPLDBlock, UCANLink }
-export type { DecodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat }
+export type { DecodeFailure, EncodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat }
 export type { AssertLocation, AssertPartition, AssertInclusion, AssertIndex, AssertEquals, AssertRelation }
 
 export interface IndexingServiceClient {
@@ -35,7 +35,7 @@ export interface QueryOk extends QueryResult {}
 export interface QueryResult extends IPLDView {
   claims: Map<string, Claim>
   indexes: Map<string, ShardedDAGIndex>
-  archive (): Promise<Result<Uint8Array>>
+  archive (): Promise<Result<Uint8Array, EncodeFailure>>
 }
 
 export type QueryError =
