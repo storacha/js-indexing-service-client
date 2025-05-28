@@ -1,12 +1,12 @@
 import { MultihashDigest, Link, UnknownLink } from 'multiformats'
 import { Ability, BlockStore, Capability, Capabilities, Caveats, Delegation, Failure, Resource, Result, DID, IPLDView, IPLDBlock, UCANLink, ServiceMethod } from '@ucanto/interface'
 import { DecodeFailure, EncodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat } from '@storacha/blob-index/types'
-import { AssertLocation, AssertPartition, AssertInclusion, AssertIndex, AssertEquals, AssertRelation } from '@storacha/capabilities/types'
+import { AssertLocation, AssertPartition, AssertInclusion, AssertIndex, AssertEquals, AssertRelation, ClaimCache } from '@storacha/capabilities/types'
 
 export type { MultihashDigest, Link }
 export type { Ability, BlockStore, Capability, Capabilities, Caveats, Delegation, Failure, Resource, Result, DID, IPLDView, IPLDBlock, UCANLink }
 export type { DecodeFailure, EncodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat }
-export type { AssertLocation, AssertPartition, AssertInclusion, AssertIndex, AssertEquals, AssertRelation }
+export type { AssertLocation, AssertPartition, AssertInclusion, AssertIndex, AssertEquals, AssertRelation, ClaimCache }
 
 export interface IndexingServiceClient {
   queryClaims (q: Query): Promise<Result<QueryOk, QueryError>>
@@ -116,5 +116,8 @@ export interface IndexingService {
   assert: {
     index: ServiceMethod<AssertIndex, {}, Failure>
     equals: ServiceMethod<AssertEquals, {}, Failure>
+  },
+  claim: {
+    cache: ServiceMethod<ClaimCache, {}, Failure>
   }
 }

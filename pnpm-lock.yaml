@@ -15,8 +15,8 @@ importers:
         specifier: 1.1.0-rc.0
         version: 1.1.0-rc.0
       '@storacha/capabilities':
-        specifier: ^1.6.0
-        version: 1.6.0
+        specifier: 1.7.0-rc.0
+        version: 1.7.0-rc.0
       '@ucanto/core':
         specifier: ^10.4.0
         version: 10.4.0
@@ -84,6 +84,9 @@ packages:
 
   '@storacha/capabilities@1.6.0':
     resolution: {integrity: sha512-feHDRYfVTY1FArKCYZdfcx6Vj5HuEglurKy9+nKb0Bf/RTyETJM9eiftWORBlJmiRzDLH4iPr6EmGdhfTanCCQ==}
+
+  '@storacha/capabilities@1.7.0-rc.0':
+    resolution: {integrity: sha512-y+BhKDY8fem15+4YstC07BQY2jLO5zD8zcsBUpnMmZOmouDfPiq/SK/e8S5FbXS7J+xcqCTamSacXLxCojsAsg==}
 
   '@storacha/one-webcrypto@1.0.1':
     resolution: {integrity: sha512-bD+vWmcgsEBqU0Dz04BR43SA03bBoLTAY29vaKasY9Oe8cb6XIP0/vkm0OS2UwKC13c8uRgFW4rjJUgDCNLejQ==}
@@ -506,6 +509,16 @@ snapshots:
       uint8arrays: 5.1.0
 
   '@storacha/capabilities@1.6.0':
+    dependencies:
+      '@ucanto/core': 10.4.0
+      '@ucanto/interface': 10.3.0
+      '@ucanto/principal': 9.0.2
+      '@ucanto/transport': 9.2.0
+      '@ucanto/validator': 9.1.0
+      '@web3-storage/data-segment': 5.3.0
+      multiformats: 13.3.6
+
+  '@storacha/capabilities@1.7.0-rc.0':
     dependencies:
       '@ucanto/core': 10.4.0
       '@ucanto/interface': 10.3.0
