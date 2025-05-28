@@ -1,12 +1,12 @@
 /** @import * as API from './api.js' */
 import * as CBOR from '@ipld/dag-cbor'
 import { create as createLink } from 'multiformats/link'
-import { ok, error, Schema, Delegation } from '@ucanto/core'
+import { ok, error, Schema } from '@ucanto/core'
 import * as CAR from '@ucanto/core/car'
 import * as ShardedDAGIndex from '@storacha/blob-index/sharded-dag-index'
 import { UnknownFormatError, DecodeError } from './errors.js'
 import { sha256 } from 'multiformats/hashes/sha2'
-import { decodeDelegation } from '@web3-storage/content-claims/client'
+import * as Claim from './claim.js'
 
 export const version = 'index/query/result@0.1'
 
@@ -50,10 +50,10 @@ export const view = async ({ root, blocks }) => {
       for (const root of parsed.claims ?? []) {
         let claim
         try {
-          claim = await decodeDelegation(Delegation.view({
+          claim = Claim.view({
             root: /** @type {API.UCANLink} */ (root),
             blocks
-          }))
+          })
         } catch (/** @type {any} */ err) {
           return error(new DecodeError(`decoding claim: ${root}: ${err.message}`))
         }
@@ -88,48 +88,57 @@ export const view = async ({ root, blocks }) => {
  *   claims?: API.Claim[]
  *   indexes?: Map<ContextID, API.ShardedDAGIndexView>
  * }} param
+ * @returns {Promise<API.Result<API.QueryResult, API.EncodeFailure>>}
  */
 export const from = async ({ claims, indexes }) => {
-  const blocks = new Map()
-  const rootData = {
-    'index/query/result@0.1': {
-      claims: /** @type {API.Link[]} **/ ([]),
-      indexes: /** @type {Record<string, API.Link>} */ ({})
-    }
-  }
-  const data = { claims: new Map(), indexes: new Map() }
-
-  if (claims) {
-    for (const claim of claims) {
-      rootData['index/query/result@0.1'].claims.push(claim.delegation().link())
-      for (const block of claim.delegation().iterateIPLDBlocks()) {
-        blocks.set(block.cid.toString(), block)
+  try {
+    const blocks = new Map()
+    const rootData = {
+      'index/query/result@0.1': {
+        claims: /** @type {API.Link[]} **/ ([]),
+        indexes: /** @type {Record<string, API.Link>} */ ({})
       }
-      data.claims.set(claim.delegation().link().toString(), claim)
     }
-  }
+    const data = { claims: new Map(), indexes: new Map() }
 
-  if (indexes) {
-    for (const [contextID, index] of indexes.entries()) {
-      const result = await index.archive()
-      if (!result.ok) {
-        return result
+    if (claims) {
+      for (const claim of claims) {
+        rootData['index/query/result@0.1'].claims.push(claim.delegation().link())
+        for (const block of claim.delegation().iterateIPLDBlocks()) {
+          blocks.set(block.cid.toString(), block)
+        }
+        data.claims.set(claim.delegation().link().toString(), claim)
       }
-      const digest = await sha256.digest(result.ok)
-      const link = createLink(CAR.code, digest)
-      rootData['index/query/result@0.1'].indexes[contextID] = link
-      blocks.set(link.toString(), { cid: link, bytes: result.ok })
-      data.indexes.set(link.toString(), index)
     }
+
+    if (indexes) {
+      for (const [contextID, index] of indexes.entries()) {
+        const result = await index.archive()
+        if (!result.ok) {
+          return result
+        }
+        const digest = await sha256.digest(result.ok)
+        const link = createLink(CAR.code, digest)
+        rootData['index/query/result@0.1'].indexes[contextID] = link
+        blocks.set(link.toString(), { cid: link, bytes: result.ok })
+        data.indexes.set(link.toString(), index)
+      }
+    }
+
+    const rootBytes = CBOR.encode(rootData)
+    const rootDigest = await sha256.digest(rootBytes)
+    const rootLink = createLink(CBOR.code, rootDigest)
+    const root = { cid: rootLink, bytes: rootBytes }
+    blocks.set(rootLink.toString(), root)
+
+    return ok(new QueryResult({ root, blocks, data }))
+  } catch (/** @type {any} */ err) {
+    return error(/** @type {API.EncodeFailure} */ ({
+      name: 'EncodeFailure',
+      message: `encoding DAG: ${err.message}`,
+      stack: err.stack
+    }))
   }
-
-  const rootBytes = CBOR.encode(rootData)
-  const rootDigest = await sha256.digest(rootBytes)
-  const rootLink = createLink(CBOR.code, rootDigest)
-  const root = { cid: rootLink, bytes: rootBytes }
-  blocks.set(rootLink.toString(), root)
-
-  return ok(new QueryResult({ root, blocks, data }))
 }
 
 class QueryResult {
@@ -176,14 +185,22 @@ class QueryResult {
 
 /**
  * @param {API.QueryResult} result
- * @returns {Promise<API.Result<Uint8Array>>}
+ * @returns {Promise<API.Result<Uint8Array, API.EncodeFailure>>}
  */
 export const archive = async (result) => {
-  const blocks = new Map()
-  for (const block of result.iterateIPLDBlocks()) {
-    blocks.set(block.cid.toString(), block)
+  try {
+    const blocks = new Map()
+    for (const block of result.iterateIPLDBlocks()) {
+      blocks.set(block.cid.toString(), block)
+    }
+    return ok(CAR.encode({ roots: [result.root], blocks }))
+  } catch (/** @type {any} */ err) {
+    return error(/** @type {API.EncodeFailure} */ ({
+      name: 'EncodeFailure',
+      message: `encoding CAR: ${err.message}`,
+      stack: err.stack
+    }))
   }
-  return ok(CAR.encode({ roots: [result.root], blocks }))
 }
 
 /**

@@ -19,6 +19,10 @@
       "import": "./src/api.js",
       "types": "./dist/src/api.d.ts"
     },
+    "./claim": {
+      "import": "./src/claim.js",
+      "types": "./dist/src/claim.d.ts"
+    },
     "./errors": {
       "import": "./src/errors.js",
       "types": "./dist/src/errors.d.ts"
@@ -30,10 +34,10 @@
   },
   "dependencies": {
     "@ipld/dag-cbor": "^9.2.3",
-    "@storacha/blob-index": "^1.0.6",
+    "@storacha/blob-index": "^1.1.0",
+    "@storacha/capabilities": "^1.7.0",
     "@ucanto/core": "^10.4.0",
     "@ucanto/interface": "^10.3.0",
-    "@web3-storage/content-claims": "^5.2.1",
     "multiformats": "^13.3.6"
   },
   "devDependencies": {
@@ -42,7 +46,7 @@
     "@types/node": "^22.9.0",
     "chai": "^5.1.2",
     "mocha": "^10.8.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.8.3"
   },
   "prettier": {
     "trailingComma": "es5",

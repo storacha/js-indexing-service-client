@@ -6,8 +6,12 @@ import * as Digest from 'multiformats/hashes/digest'
 import { base58btc } from 'multiformats/bases/base58'
 import { equals } from 'multiformats/bytes'
 import { Client } from '../src/index.js'
-import { contentMultihash } from '@web3-storage/content-claims/client'
-/** @import { Link } from '../src/api.js' */
+
+/** @import { Link, Claim } from '../src/api.js' */
+
+/** @param {Claim} claim */
+const contentDigest = (claim) =>
+  'digest' in claim.content ? Digest.decode(claim.content.digest) : claim.content.multihash
 
 describe('indexing service client', () => {
   it('queries claims', async () => {
@@ -26,7 +30,7 @@ describe('indexing service client', () => {
     })
     assert(indexClaim)
 
-    assert(equals(digest.bytes, contentMultihash(indexClaim).bytes))
+    assert(equals(digest.bytes, contentDigest(indexClaim).bytes))
 
     // index should be included in results
     const index = result.ok.indexes.get(indexClaim.index.toString())
@@ -35,7 +39,7 @@ describe('indexing service client', () => {
     // find location claim for the index
     const indexLocationCommitment = [...result.ok.claims.values()].filter(c => {
       return c.type === 'assert/location'
-    }).find(c => equals(contentMultihash(c).bytes, indexClaim.index.multihash.bytes))
+    }).find(c => equals(contentDigest(c).bytes, indexClaim.index.multihash.bytes))
     assert(indexLocationCommitment)
 
     assert(indexLocationCommitment.location)
@@ -46,7 +50,7 @@ describe('indexing service client', () => {
     const [[shard, slices]] = index.shards.entries()
     const shardLocationCommitment = [...result.ok.claims.values()].filter(c => {
       return c.type === 'assert/location'
-    }).find(c => equals(contentMultihash(c).bytes, shard.bytes))
+    }).find(c => equals(contentDigest(c).bytes, shard.bytes))
     assert(shardLocationCommitment)
 
     assert(shardLocationCommitment.location)
