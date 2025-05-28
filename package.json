@@ -19,6 +19,10 @@
       "import": "./src/api.js",
       "types": "./dist/src/api.d.ts"
     },
+    "./claim": {
+      "import": "./src/claim.js",
+      "types": "./dist/src/claim.d.ts"
+    },
     "./errors": {
       "import": "./src/errors.js",
       "types": "./dist/src/errors.d.ts"
