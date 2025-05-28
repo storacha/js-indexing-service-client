@@ -12,11 +12,11 @@ importers:
         specifier: ^9.2.3
         version: 9.2.3
       '@storacha/blob-index':
-        specifier: 1.1.0-rc.0
-        version: 1.1.0-rc.0
+        specifier: ^1.1.0
+        version: 1.1.0
       '@storacha/capabilities':
-        specifier: 1.7.0-rc.0
-        version: 1.7.0-rc.0
+        specifier: ^1.7.0
+        version: 1.7.0
       '@ucanto/core':
         specifier: ^10.4.0
         version: 10.4.0
@@ -78,15 +78,12 @@ packages:
     resolution: {integrity: sha512-1j6kQFb7QRru7eKN3ZDvRcP13rugwdxZqCjbiAVZfIJwgj2A65UmT4TgARXGlXgnRkORLTDTrO19ZErt7+QXgA==}
     engines: {node: ^14.21.3 || >=16}
 
-  '@storacha/blob-index@1.1.0-rc.0':
-    resolution: {integrity: sha512-LTPfv0POAKbFJAem1Iz7utZzlh2auIhUZ7TQYz9YM9tZOWXwWz4oKXv6v0sXsqK5NGZsnolT5iQbNJ2f8GXZBg==}
+  '@storacha/blob-index@1.1.0':
+    resolution: {integrity: sha512-f8+e7N6ww/YJ83Z4GeeGuQevVueRLg3StB0kv36ia/RkOWGBzqzoDQvXnxTY5rTJzcDT712pZdVcdHJX6jwbkg==}
     engines: {node: '>=16.15'}
 
-  '@storacha/capabilities@1.6.0':
-    resolution: {integrity: sha512-feHDRYfVTY1FArKCYZdfcx6Vj5HuEglurKy9+nKb0Bf/RTyETJM9eiftWORBlJmiRzDLH4iPr6EmGdhfTanCCQ==}
-
-  '@storacha/capabilities@1.7.0-rc.0':
-    resolution: {integrity: sha512-y+BhKDY8fem15+4YstC07BQY2jLO5zD8zcsBUpnMmZOmouDfPiq/SK/e8S5FbXS7J+xcqCTamSacXLxCojsAsg==}
+  '@storacha/capabilities@1.7.0':
+    resolution: {integrity: sha512-YMIuocTgaVpqlgyds5NG+eJqfr+dfFkxdk33lJcFIRD30SZaGiA8vQ0ZPUHqcC9Azj0XZCRexz6nHXqEsn1aag==}
 
   '@storacha/one-webcrypto@1.0.1':
     resolution: {integrity: sha512-bD+vWmcgsEBqU0Dz04BR43SA03bBoLTAY29vaKasY9Oe8cb6XIP0/vkm0OS2UwKC13c8uRgFW4rjJUgDCNLejQ==}
@@ -497,10 +494,10 @@ snapshots:
 
   '@noble/hashes@1.5.0': {}
 
-  '@storacha/blob-index@1.1.0-rc.0':
+  '@storacha/blob-index@1.1.0':
     dependencies:
       '@ipld/dag-cbor': 9.2.3
-      '@storacha/capabilities': 1.6.0
+      '@storacha/capabilities': 1.7.0
       '@storacha/one-webcrypto': 1.0.1
       '@ucanto/core': 10.4.0
       '@ucanto/interface': 10.3.0
@@ -508,17 +505,7 @@ snapshots:
       multiformats: 13.3.6
       uint8arrays: 5.1.0
 
-  '@storacha/capabilities@1.6.0':
-    dependencies:
-      '@ucanto/core': 10.4.0
-      '@ucanto/interface': 10.3.0
-      '@ucanto/principal': 9.0.2
-      '@ucanto/transport': 9.2.0
-      '@ucanto/validator': 9.1.0
-      '@web3-storage/data-segment': 5.3.0
-      multiformats: 13.3.6
-
-  '@storacha/capabilities@1.7.0-rc.0':
+  '@storacha/capabilities@1.7.0':
     dependencies:
       '@ucanto/core': 10.4.0
       '@ucanto/interface': 10.3.0
