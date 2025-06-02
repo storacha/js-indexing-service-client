@@ -30,6 +30,10 @@
     "./query-result": {
       "import": "./src/query-result.js",
       "types": "./dist/src/query-result.d.ts"
+    },
+    "./util": {
+      "import": "./src/util.js",
+      "types": "./dist/src/util.d.ts"
     }
   },
   "dependencies": {
@@ -44,6 +48,7 @@
     "@types/chai": "^5.0.1",
     "@types/mocha": "^10.0.9",
     "@types/node": "^22.9.0",
+    "@ucanto/principal": "^9.0.2",
     "chai": "^5.1.2",
     "mocha": "^10.8.2",
     "typescript": "^5.8.3"
