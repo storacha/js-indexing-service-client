@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/storacha/js-indexing-service-client/compare/v2.2.0...v2.3.0) (2025-06-03)
+
+
+### Features
+
+* client combiner ([#19](https://github.com/storacha/js-indexing-service-client/issues/19)) ([b06c657](https://github.com/storacha/js-indexing-service-client/commit/b06c657d03bdd9d300845f13d492172e7d04e670))
+
 ## [2.2.0](https://github.com/storacha/js-indexing-service-client/compare/v2.1.3...v2.2.0) (2025-05-28)
 
 
