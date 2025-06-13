@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/storacha/js-indexing-service-client/compare/v2.3.0...v2.3.1) (2025-06-13)
+
+
+### Bug Fixes
+
+* return result when fetch throws ([#21](https://github.com/storacha/js-indexing-service-client/issues/21)) ([d95dd2b](https://github.com/storacha/js-indexing-service-client/commit/d95dd2b1c007cc1fc63860cf5b9462b53b8c2806))
+
 ## [2.3.0](https://github.com/storacha/js-indexing-service-client/compare/v2.2.0...v2.3.0) (2025-06-03)
 
 
