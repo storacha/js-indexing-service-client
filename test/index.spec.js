@@ -4,6 +4,7 @@ import { describe, it } from 'mocha'
 import { expect, assert } from 'chai'
 import * as Digest from 'multiformats/hashes/digest'
 import { base58btc } from 'multiformats/bases/base58'
+import { sha256 } from 'multiformats/hashes/sha2'
 import { equals } from 'multiformats/bytes'
 import { Client } from '../src/index.js'
 
@@ -66,5 +67,21 @@ describe('indexing service client', () => {
     console.log(`    Location: ${shardLocationCommitment.location}`)
     console.log(`    Position: ${position[0]}-${position[0]+position[1]}`)
     console.log()
+  })
+
+  it('return result when fetch throws', async () => {
+    const client = new Client({
+      fetch: async () => {
+        throw new Error('boom')
+      }
+    })
+
+    const digest = await sha256.digest(new Uint8Array([1, 2, 3]))
+    const result = await client.queryClaims({ hashes: [digest] })
+
+    assert.equal(result.ok, undefined)
+    assert.ok(result.error)
+    assert.equal(result.error.name, 'NetworkError')
+    assert.equal(result.error.message, 'boom')
   })
 })

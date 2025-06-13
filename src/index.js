@@ -43,14 +43,19 @@ export class Client {
       return error(new InvalidQueryError('missing multihashes in query'))
     }
 
-    const response = await this.#fetch(url)
-    if (!response.ok) {
-      return error(new NetworkError(`unexpected status: ${response.status}`))
-    }
-    if (!response.body) {
-      return error(new NetworkError('missing response body'))
-    }
+    let response
+    try {
+      response = await this.#fetch(url)
+      if (!response.ok) {
+        return error(new NetworkError(`unexpected status: ${response.status}`))
+      }
+      if (!response.body) {
+        return error(new NetworkError('missing response body'))
+      }
 
-    return QueryResult.extract(new Uint8Array(await response.arrayBuffer()))
+      return QueryResult.extract(new Uint8Array(await response.arrayBuffer()))
+    } catch (/** @type {any} */ err) {
+      return error(new NetworkError(err.message ?? 'fetch failed'))
+    }
   }
 }
