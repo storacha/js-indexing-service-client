@@ -1,15 +1,15 @@
 import { error } from '@ucanto/core'
 import * as QueryResult from './query-result.js'
 
-/** @import { IndexingServiceClient, QueryError } from './api.js' */
+/** @import { IndexingServiceQueryClient, QueryError } from './api.js' */
 
 /**
  * Combines the passed clients into a single client. When querying claims, error
  * responses are ignored unless ALL clients return an error. If all clients
  * return an error then the first error encountered is returned.
  *
- * @param {IndexingServiceClient[]} clients
- * @returns {IndexingServiceClient}
+ * @param {IndexingServiceQueryClient[]} clients
+ * @returns {IndexingServiceQueryClient}
  */
 export const combine = (clients) => {
   if (!clients.length) {

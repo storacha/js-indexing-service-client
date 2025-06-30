@@ -11,18 +11,27 @@ importers:
       '@ipld/dag-cbor':
         specifier: ^9.2.3
         version: 9.2.3
+      '@ipld/dag-ucan':
+        specifier: ^3.4.5
+        version: 3.4.5
       '@storacha/blob-index':
         specifier: ^1.1.0
         version: 1.1.0
       '@storacha/capabilities':
         specifier: ^1.7.0
         version: 1.7.0
+      '@ucanto/client':
+        specifier: ^9.0.1
+        version: 9.0.1
       '@ucanto/core':
         specifier: ^10.4.0
         version: 10.4.0
       '@ucanto/interface':
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^11.0.0
+        version: 11.0.0
+      '@ucanto/transport':
+        specifier: ^9.2.0
+        version: 9.2.0
       multiformats:
         specifier: ^13.3.6
         version: 13.3.6
@@ -39,6 +48,9 @@ importers:
       '@ucanto/principal':
         specifier: ^9.0.2
         version: 9.0.2
+      '@ucanto/server':
+        specifier: ^11.0.0
+        version: 11.0.0
       chai:
         specifier: ^5.1.2
         version: 5.1.2
@@ -103,17 +115,29 @@ packages:
   '@types/node@22.9.0':
     resolution: {integrity: sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==}
 
+  '@ucanto/client@9.0.1':
+    resolution: {integrity: sha512-cV8w3AnaZaYCdUmyFFICj8YhFckDoy2DvWgAzGDMkPz0WbUW4lw9Tjm4hEE8x5kiP47wYej/pHKWCcoELiU0qw==}
+
   '@ucanto/core@10.4.0':
     resolution: {integrity: sha512-ohLgxHUo/XgL1G/pvelsHl3zyq7w+fn6ZVN3yVhgiJwbRh67EqvjavXYEFGSLBzlAdMGsfDNkbetQob1sNSNGg==}
 
   '@ucanto/interface@10.3.0':
     resolution: {integrity: sha512-97929CGr3AM4Y01CLZ3wwhzrlth5pq8eJCbd/hUMxD62nyG9eRsyvt3RSOtBNtu4jTdMH580x0oAF2D1XKcPvw==}
 
+  '@ucanto/interface@11.0.0':
+    resolution: {integrity: sha512-679NmyKXAuh9Zu8BbTNvwmi5gke8RytH7qRvPxpWL/ytKUm/Ea3y1fwGmaCnTbf38GXtVP89eERAsh+p8pSXzA==}
+
   '@ucanto/principal@9.0.2':
     resolution: {integrity: sha512-RE3Rj0oz4wh4C9p2JJZB9+QLd7Fi3lCixrbHgAvEoSyTNpvz6ky8DGNtttmD5j3O94z13qdVdIoSRY6DQZXfAg==}
 
+  '@ucanto/server@11.0.0':
+    resolution: {integrity: sha512-4XJbQHINpmsco9BE/EHkIogXK7BXsDAyUDC96rwBmGYg1kbBAkCjEhs4j7KuaE0UkyO8UgSX7SEVYuLiJy4u4Q==}
+
   '@ucanto/transport@9.2.0':
     resolution: {integrity: sha512-w/CtD5LYEpGo/CxV78IiWalW99gNRPHKZ/DoOpart5QShozvnU//PwUqyqnGimZCDIrIq4LH6x92z2L/2k5OKQ==}
+
+  '@ucanto/validator@10.0.0':
+    resolution: {integrity: sha512-24inv+3JgjKSNqBEBZt8QcIFes8uh/7Q10mK8RHiKRNgATEjvJd4BvskzSe1y0zM3sKIlcRQBAfX5cqLaps7vA==}
 
   '@ucanto/validator@9.1.0':
     resolution: {integrity: sha512-2JnEEZYc8kTZz+qbyL7LbI/TSpBRWLOchNhaRB5DTyj38FxMFQUXIB7gQ5lZHv49uYJGx/FXKPw0268WgJdEvg==}
@@ -532,6 +556,11 @@ snapshots:
     dependencies:
       undici-types: 6.19.8
 
+  '@ucanto/client@9.0.1':
+    dependencies:
+      '@ucanto/core': 10.4.0
+      '@ucanto/interface': 10.3.0
+
   '@ucanto/core@10.4.0':
     dependencies:
       '@ipld/car': 5.3.3
@@ -541,6 +570,11 @@ snapshots:
       multiformats: 13.3.6
 
   '@ucanto/interface@10.3.0':
+    dependencies:
+      '@ipld/dag-ucan': 3.4.5
+      multiformats: 13.3.6
+
+  '@ucanto/interface@11.0.0':
     dependencies:
       '@ipld/dag-ucan': 3.4.5
       multiformats: 13.3.6
@@ -555,10 +589,25 @@ snapshots:
       multiformats: 13.3.6
       one-webcrypto: 1.0.3
 
+  '@ucanto/server@11.0.0':
+    dependencies:
+      '@ucanto/core': 10.4.0
+      '@ucanto/interface': 11.0.0
+      '@ucanto/principal': 9.0.2
+      '@ucanto/validator': 10.0.0
+
   '@ucanto/transport@9.2.0':
     dependencies:
       '@ucanto/core': 10.4.0
       '@ucanto/interface': 10.3.0
+
+  '@ucanto/validator@10.0.0':
+    dependencies:
+      '@ipld/car': 5.4.1
+      '@ipld/dag-cbor': 9.2.3
+      '@ucanto/core': 10.4.0
+      '@ucanto/interface': 11.0.0
+      multiformats: 13.3.6
 
   '@ucanto/validator@9.1.0':
     dependencies:

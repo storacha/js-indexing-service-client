@@ -1,18 +1,27 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { describe, it } from 'mocha'
-import { expect, assert } from 'chai'
+import { assert } from 'chai'
 import * as Digest from 'multiformats/hashes/digest'
 import { base58btc } from 'multiformats/bases/base58'
 import { sha256 } from 'multiformats/hashes/sha2'
 import { equals } from 'multiformats/bytes'
+import { connect } from '@ucanto/client'
+import { CAR } from '@ucanto/transport'
+import * as ed25519 from '@ucanto/principal/ed25519'
+import * as Server from '@ucanto/server'
+import * as AssertCaps from '@storacha/capabilities/assert'
+import * as ClaimCaps from '@storacha/capabilities/claim'
 import { Client } from '../src/index.js'
+import { randomLink } from './helpers.js'
 
-/** @import { Link, Claim } from '../src/api.js' */
+/** @import { Claim } from '../src/api.js' */
 
 /** @param {Claim} claim */
 const contentDigest = (claim) =>
   'digest' in claim.content ? Digest.decode(claim.content.digest) : claim.content.multihash
+
+const notImplemented = () => Server.error(new Error('not implemented'))
 
 describe('indexing service client', () => {
   it('queries claims', async () => {
@@ -83,5 +92,87 @@ describe('indexing service client', () => {
     assert.ok(result.error)
     assert.equal(result.error.name, 'NetworkError')
     assert.equal(result.error.message, 'boom')
+  })
+
+  it('publish index claim', async () => {
+    const alice = await ed25519.generate()
+    const service = await ed25519.generate()
+    const proof = await AssertCaps.index.delegate({
+      issuer: service,
+      audience: alice,
+      with: service.did()
+    })
+
+    const server = Server.create({
+      id: service,
+      codec: CAR.inbound,
+      service: {
+        assert: {
+          index: Server.provide(AssertCaps.index, () => Server.ok({})),
+          equals: Server.provide(AssertCaps.equals, notImplemented)
+        },
+        claim: {
+          cache: Server.provide(ClaimCaps.cache, notImplemented)
+        },
+      },
+      validateAuthorization: () => ({ ok: true })
+    })
+
+    const client = new Client({
+      connection: connect({
+        id: service,
+        codec: CAR.outbound,
+        channel: server
+      })
+    })
+
+    const receipt = await client.publishIndexClaim(alice, {
+      content: randomLink(),
+      index: randomLink()
+    }, { proofs: [proof] })
+
+    assert.equal(receipt.out.error, undefined)
+    assert(receipt.out.ok)
+  })
+
+  it('publish equals claim', async () => {
+    const alice = await ed25519.generate()
+    const service = await ed25519.generate()
+    const proof = await AssertCaps.equals.delegate({
+      issuer: service,
+      audience: alice,
+      with: service.did()
+    })
+
+    const server = Server.create({
+      id: service,
+      codec: CAR.inbound,
+      service: {
+        assert: {
+          index: Server.provide(AssertCaps.index, notImplemented),
+          equals: Server.provide(AssertCaps.equals, () => Server.ok({}))
+        },
+        claim: {
+          cache: Server.provide(ClaimCaps.cache, notImplemented)
+        },
+      },
+      validateAuthorization: () => ({ ok: true })
+    })
+
+    const client = new Client({
+      connection: connect({
+        id: service,
+        codec: CAR.outbound,
+        channel: server
+      })
+    })
+
+    const receipt = await client.publishEqualsClaim(alice, {
+      content: randomLink(),
+      equals: randomLink()
+    }, { proofs: [proof] })
+
+    assert.equal(receipt.out.error, undefined)
+    assert(receipt.out.ok)
   })
 })
