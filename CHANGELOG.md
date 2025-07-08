@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/storacha/js-indexing-service-client/compare/v2.3.1...v2.4.0) (2025-07-08)
+
+
+### Features
+
+* claim view from delegation ([#25](https://github.com/storacha/js-indexing-service-client/issues/25)) ([8de3339](https://github.com/storacha/js-indexing-service-client/commit/8de33396bb45377bb35224266f2c90d03f0eacf1))
+
 ## [2.3.1](https://github.com/storacha/js-indexing-service-client/compare/v2.3.0...v2.3.1) (2025-06-13)
 
 
