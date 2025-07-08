@@ -16,10 +16,16 @@ const assertCapMap = {
  * @param {object} dag
  * @param {API.UCANLink<C>} dag.root
  * @param {API.BlockStore<unknown>} dag.blocks
- * @returns {import('./api.js').Claim}
+ * @returns {API.Claim}
  */
-export const view = ({ root, blocks }) => {
-  const delegation = Delegation.view({ root, blocks })
+export const view = ({ root, blocks }) =>
+  from(Delegation.view({ root, blocks }))
+
+/**
+ * @param {API.Delegation} delegation
+ * @returns {API.Claim}
+ */
+export const from = (delegation) => {
   const cap = delegation.capabilities[0]
   const capability = assertCapMap[
     /** @type {keyof typeof assertCapMap} */

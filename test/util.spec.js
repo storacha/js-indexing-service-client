@@ -10,13 +10,10 @@ import * as Claim from '../src/claim.js'
 import * as QueryResult from '../src/query-result.js'
 import { Client } from '../src/index.js'
 import { combine } from '../src/util.js'
+import { randomDigest, randomLink } from './helpers.js'
 
 /** @import { URI } from '@ucanto/interface' */
 
-/** @param {number} size */
-const randomBytes = size => crypto.getRandomValues(new Uint8Array(size))
-const randomDigest = () => sha256.digest(randomBytes(32))
-const randomLink = async () => Link.create(raw.code, await randomDigest())
 /** @param {Uint8Array} bytes */
 const toCARLink = async bytes => Link.create(0x0202, await sha256.digest(bytes))
 
