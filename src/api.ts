@@ -1,15 +1,22 @@
 import { MultihashDigest, Link, UnknownLink } from 'multiformats'
-import { Ability, BlockStore, Capability, Capabilities, Caveats, Delegation, Failure, Resource, Result, DID, IPLDView, IPLDBlock, UCANLink, ServiceMethod } from '@ucanto/interface'
+import { Principal, Signer } from '@ipld/dag-ucan'
+import { Ability, BlockStore, Capability, Capabilities, Caveats, ConnectionView, Delegation, DID, Failure, IPLDView, IPLDBlock, Receipt, Resource, Result, ServiceMethod, UCANLink, UCANOptions, Unit } from '@ucanto/interface'
 import { DecodeFailure, EncodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat } from '@storacha/blob-index/types'
 import { AssertLocation, AssertPartition, AssertInclusion, AssertIndex, AssertEquals, AssertRelation, ClaimCache } from '@storacha/capabilities/types'
 
 export type { MultihashDigest, Link }
-export type { Ability, BlockStore, Capability, Capabilities, Caveats, Delegation, Failure, Resource, Result, DID, IPLDView, IPLDBlock, UCANLink }
+export type { Principal, Signer }
+export type { Ability, BlockStore, Capability, Capabilities, Caveats, ConnectionView, Delegation, DID, Failure, IPLDView, IPLDBlock, Receipt, Resource, Result, ServiceMethod, UCANLink, UCANOptions }
 export type { DecodeFailure, EncodeFailure, ShardedDAGIndex, ShardedDAGIndexView, UnknownFormat }
 export type { AssertLocation, AssertPartition, AssertInclusion, AssertIndex, AssertEquals, AssertRelation, ClaimCache }
 
-export interface IndexingServiceClient {
+export interface IndexingServiceQueryClient {
   queryClaims (q: Query): Promise<Result<QueryOk, QueryError>>
+}
+
+export interface IndexingServiceClient extends IndexingServiceQueryClient {
+  publishIndexClaim(issuer: Signer, params: AssertIndex['nb'], options: Omit<UCANOptions, 'audience'>): Promise<Receipt<Unit, Failure>>
+  publishEqualsClaim(issuer: Signer, params: AssertEquals['nb'], options: Omit<UCANOptions, 'audience'>): Promise<Receipt<Unit, Failure>>
 }
 
 /**
