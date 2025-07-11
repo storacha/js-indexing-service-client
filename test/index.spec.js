@@ -127,8 +127,8 @@ describe('indexing service client', () => {
     })
 
     const receipt = await client.publishIndexClaim(alice, {
-      content: randomLink(),
-      index: randomLink()
+      content: await randomLink(),
+      index: await randomLink()
     }, { proofs: [proof] })
 
     assert.equal(receipt.out.error, undefined)
@@ -168,8 +168,8 @@ describe('indexing service client', () => {
     })
 
     const receipt = await client.publishEqualsClaim(alice, {
-      content: randomLink(),
-      equals: randomLink()
+      content: await randomLink(),
+      equals: await randomLink()
     }, { proofs: [proof] })
 
     assert.equal(receipt.out.error, undefined)
