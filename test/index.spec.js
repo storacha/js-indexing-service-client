@@ -13,6 +13,12 @@ import * as Server from '@ucanto/server'
 import * as AssertCaps from '@storacha/capabilities/assert'
 import * as ClaimCaps from '@storacha/capabilities/claim'
 import { Client } from '../src/index.js'
+import { 
+  NetworkTimeoutError, 
+  NetworkConnectionError, 
+  ServerError, 
+  ClientError 
+} from '../src/errors.js'
 import { randomLink } from './helpers.js'
 
 /** @import { Claim } from '../src/api.js' */
@@ -174,5 +180,121 @@ describe('indexing service client', () => {
 
     assert.equal(receipt.out.error, undefined)
     assert(receipt.out.ok)
+  })
+})
+
+describe('error handling', () => {
+  it('handles server errors with retry', async () => {
+    let attempts = 0
+    const client = new Client({
+      fetch: async () => {
+        attempts++
+        if (attempts < 3) {
+          return new Response(null, { status: 503 })
+        }
+        return new Response(await fs.promises.readFile(
+          path.join(import.meta.dirname, 'fixtures', 'zQmRm3SMS4EbiKYy7VeV3zqXqzyr76mq9b2zg3Tij3VhKUG.queryresult.car')
+        ))
+      },
+      retry: {
+        initialDelay: 10, // Speed up test by reducing delays
+        maxDelay: 20
+      }
+    })
+
+    const digest = Digest.decode(base58btc.decode('zQmRm3SMS4EbiKYy7VeV3zqXqzyr76mq9b2zg3Tij3VhKUG'))
+    const result = await client.queryClaims({ hashes: [digest] })
+    
+    assert(result.ok)
+    assert.equal(attempts, 3, 'Should have retried twice before succeeding')
+  })
+
+  it('handles network timeout errors with retry', async () => {
+    let attempts = 0
+    const client = new Client({
+      fetch: async () => {
+        attempts++
+        if (attempts < 2) {
+          throw new Error('AbortError')
+        }
+        return new Response(await fs.promises.readFile(
+          path.join(import.meta.dirname, 'fixtures', 'zQmRm3SMS4EbiKYy7VeV3zqXqzyr76mq9b2zg3Tij3VhKUG.queryresult.car')
+        ))
+      },
+      retry: {
+        initialDelay: 10,
+        maxDelay: 20
+      }
+    })
+
+    const digest = Digest.decode(base58btc.decode('zQmRm3SMS4EbiKYy7VeV3zqXqzyr76mq9b2zg3Tij3VhKUG'))
+    const result = await client.queryClaims({ hashes: [digest] })
+    
+    assert(result.ok)
+    assert.equal(attempts, 2, 'Should have retried once before succeeding')
+  })
+
+  it('handles connection errors with retry', async () => {
+    let attempts = 0
+    const client = new Client({
+      fetch: async () => {
+        attempts++
+        if (attempts < 2) {
+          throw new TypeError('Failed to fetch')
+        }
+        return new Response(await fs.promises.readFile(
+          path.join(import.meta.dirname, 'fixtures', 'zQmRm3SMS4EbiKYy7VeV3zqXqzyr76mq9b2zg3Tij3VhKUG.queryresult.car')
+        ))
+      },
+      retry: {
+        initialDelay: 10,
+        maxDelay: 20
+      }
+    })
+
+    const digest = Digest.decode(base58btc.decode('zQmRm3SMS4EbiKYy7VeV3zqXqzyr76mq9b2zg3Tij3VhKUG'))
+    const result = await client.queryClaims({ hashes: [digest] })
+    
+    assert(result.ok)
+    assert.equal(attempts, 2, 'Should have retried once before succeeding')
+  })
+
+  it('gives up after max attempts', async () => {
+    let attempts = 0
+    const client = new Client({
+      fetch: async () => {
+        attempts++
+        return new Response(null, { status: 503 })
+      },
+      retry: {
+        maxAttempts: 2,
+        initialDelay: 10,
+        maxDelay: 20
+      }
+    })
+
+    const digest = Digest.decode(base58btc.decode('zQmRm3SMS4EbiKYy7VeV3zqXqzyr76mq9b2zg3Tij3VhKUG'))
+    const result = await client.queryClaims({ hashes: [digest] })
+    
+    assert(!result.ok)
+    assert(result.error instanceof ServerError)
+    assert.equal(attempts, 2, 'Should have tried exactly twice')
+  })
+
+  it('does not retry on client errors', async () => {
+    let attempts = 0
+    const client = new Client({
+      fetch: async () => {
+        attempts++
+        return new Response(null, { status: 400 })
+      }
+    })
+
+    const digest = Digest.decode(base58btc.decode('zQmRm3SMS4EbiKYy7VeV3zqXqzyr76mq9b2zg3Tij3VhKUG'))
+    const result = await client.queryClaims({ hashes: [digest] })
+    
+    assert(!result.ok)
+    assert(result.error instanceof ClientError)
+    assert.equal(attempts, 1, 'Should not have retried')
   })
 })
