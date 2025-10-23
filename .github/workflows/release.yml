@@ -3,6 +3,7 @@ on:
     branches:
       - main
 name: Release
+
 permissions:
   id-token: write  # Required for OIDC
   
@@ -32,7 +33,7 @@ jobs:
           cache: 'pnpm'
         if: ${{ steps.release.outputs.release_created }}
       - name: Update NPM
-        run: npm install -g npm@latest
+        run: npm install -g npm@11
         if: ${{ steps.release.outputs.release_created }}
       - name: Install Dependencies
         run: pnpm install
@@ -42,7 +43,5 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
       - name: Publish to npm
         run: npm publish --access=public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         if: ${{ steps.release.outputs.release_created }}
         
