@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/storacha/js-indexing-service-client/compare/v2.5.0...v2.6.0) (2025-10-23)
+
+
+### Features
+
+* **client:** accept gzip encoding ([de7537c](https://github.com/storacha/js-indexing-service-client/commit/de7537c10396488de4b5bcf08cd37b464b2f21e8))
+
 ## [2.5.0](https://github.com/storacha/js-indexing-service-client/compare/v2.4.0...v2.5.0) (2025-07-11)
 
 
