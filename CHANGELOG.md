@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.2](https://github.com/storacha/js-indexing-service-client/compare/v2.6.1...v2.6.2) (2025-10-23)
+
+
+### Bug Fixes
+
+* **github:** update npm for trusted publishing ([1a80f10](https://github.com/storacha/js-indexing-service-client/commit/1a80f10339cb6096348feee5c497307ed8a9d0de))
+
 ## [2.6.1](https://github.com/storacha/js-indexing-service-client/compare/v2.6.0...v2.6.1) (2025-10-23)
 
 
