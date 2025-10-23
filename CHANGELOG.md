@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.4](https://github.com/storacha/js-indexing-service-client/compare/v2.6.3...v2.6.4) (2025-10-23)
+
+
+### Bug Fixes
+
+* **ci:** one more try ([5f67c8b](https://github.com/storacha/js-indexing-service-client/commit/5f67c8b58a3f150357c2eb1fd6e6e239ba32ea3b))
+
 ## [2.6.3](https://github.com/storacha/js-indexing-service-client/compare/v2.6.2...v2.6.3) (2025-10-23)
 
 
