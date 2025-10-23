@@ -34,22 +34,28 @@ export class Client {
     serviceURL = new URL(SERVICE_URL),
     fetch = globalThis.fetch.bind(globalThis),
     headers,
-    connection
+    connection,
   } = {}) {
     this.#serviceURL = serviceURL
     this.#fetch = fetch
-    this.#conn = connection ?? connect({
-      id: servicePrincipal ?? parseDID(SERVICE_DID),
-      codec: CAR.outbound,
-      channel: HTTP.open({ url: serviceURL, fetch, headers })
-    })
+    this.#conn =
+      connection ??
+      connect({
+        id: servicePrincipal ?? parseDID(SERVICE_DID),
+        codec: CAR.outbound,
+        channel: HTTP.open({ url: serviceURL, fetch, headers }),
+      })
   }
 
   /**
    * @param {Query} query
    * @returns {Promise<Result<QueryOk, QueryError>>}
    */
-  async queryClaims({ hashes = [], match = { subject: [] }, kind = "standard" }) {
+  async queryClaims({
+    hashes = [],
+    match = { subject: [] },
+    kind = 'standard',
+  }) {
     const url = new URL(CLAIMS_PATH, this.#serviceURL)
     hashes.forEach((hash) =>
       url.searchParams.append('multihash', base58btc.encode(hash.bytes))
@@ -63,7 +69,9 @@ export class Client {
 
     let response
     try {
-      response = await this.#fetch(url)
+      response = await this.#fetch(url, {
+        headers: { 'Accept-Encoding': 'gzip' },
+      })
       if (!response.ok) {
         return error(new NetworkError(`unexpected status: ${response.status}`))
       }
@@ -83,13 +91,15 @@ export class Client {
    * @param {Omit<UCANOptions, 'audience'>} [options]
    */
   async publishIndexClaim(issuer, params, options) {
-    return index.invoke({
-      issuer,
-      audience: this.#conn.id,
-      with: this.#conn.id.did(),
-      nb: params,
-      ...options
-    }).execute(this.#conn)
+    return index
+      .invoke({
+        issuer,
+        audience: this.#conn.id,
+        with: this.#conn.id.did(),
+        nb: params,
+        ...options,
+      })
+      .execute(this.#conn)
   }
 
   /**
@@ -98,12 +108,14 @@ export class Client {
    * @param {Omit<UCANOptions, 'audience'>} [options]
    */
   async publishEqualsClaim(issuer, params, options) {
-    return equals.invoke({
-      issuer,
-      audience: this.#conn.id,
-      with: this.#conn.id.did(),
-      nb: params,
-      ...options
-    }).execute(this.#conn)
+    return equals
+      .invoke({
+        issuer,
+        audience: this.#conn.id,
+        with: this.#conn.id.did(),
+        nb: params,
+        ...options,
+      })
+      .execute(this.#conn)
   }
 }
