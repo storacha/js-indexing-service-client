@@ -40,7 +40,7 @@
     "@ipld/dag-cbor": "^9.2.3",
     "@ipld/dag-ucan": "^3.4.5",
     "@storacha/blob-index": "^1.2.1",
-    "@storacha/capabilities": "^1.9.0",
+    "@storacha/capabilities": "^1.9.1-rc.1",
     "@ucanto/client": "^9.0.2",
     "@ucanto/core": "^10.4.5",
     "@ucanto/interface": "^11.0.1",
