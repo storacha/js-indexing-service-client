@@ -26,7 +26,7 @@ export interface Match {
   subject: DID[]
 }
 
-export type Kind = "standard" | "index_or_location" | "location"
+export type Kind = "standard" | "standard_compressed" | "index_or_location" | "location"
 
 /**
  * Query is a query for several multihashes.
