@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.6](https://github.com/storacha/js-indexing-service-client/compare/v2.6.5...v2.6.6) (2025-10-26)
+
+
+### Bug Fixes
+
+* **types:** add standard_compressed type ([d9e7a44](https://github.com/storacha/js-indexing-service-client/commit/d9e7a442aebb08f3fdde9653e6c356e3fd02850b))
+
 ## [2.6.5](https://github.com/storacha/js-indexing-service-client/compare/v2.6.4...v2.6.5) (2025-10-24)
 
 
