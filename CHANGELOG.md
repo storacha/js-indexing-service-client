@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.7](https://github.com/storacha/js-indexing-service-client/compare/v2.6.6...v2.6.7) (2025-10-27)
+
+
+### Bug Fixes
+
+* **client:** passing query kind incorrectly ([fbc306e](https://github.com/storacha/js-indexing-service-client/commit/fbc306e55e892b06ec33acded486f4330b169b88))
+
 ## [2.6.6](https://github.com/storacha/js-indexing-service-client/compare/v2.6.5...v2.6.6) (2025-10-26)
 
 
