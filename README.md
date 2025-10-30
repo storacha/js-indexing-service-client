@@ -24,3 +24,4 @@ Feel free to join in. All welcome. [Open an issue](https://github.com/storacha/j
 ## License
 
 Dual-licensed under [MIT / Apache 2.0](https://github.com/storacha/js-indexing-service-client/blob/main/LICENSE.md)
+
