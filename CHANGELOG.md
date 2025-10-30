@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.6.9](https://github.com/storacha/js-indexing-service-client/compare/v2.6.8...v2.6.9) (2025-10-30)
+
+
+### Bug Fixes
+
+* try to debug oidc publishing ([7ce772b](https://github.com/storacha/js-indexing-service-client/commit/7ce772bf88106e33496c4952e250c9558926a428))
+* try to debug oidc publishing ([#40](https://github.com/storacha/js-indexing-service-client/issues/40)) ([bb78dfc](https://github.com/storacha/js-indexing-service-client/commit/bb78dfcfef7901b4f1861e0ae7ec6167d12563b5))
+
 ## [2.6.8](https://github.com/storacha/js-indexing-service-client/compare/v2.6.7...v2.6.8) (2025-10-30)
 
 
