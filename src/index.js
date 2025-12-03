@@ -73,7 +73,7 @@ export class Client {
         headers: { 'Accept-Encoding': 'gzip' },
       })
       if (!response.ok) {
-        return error(new NetworkError(`unexpected status: ${response.status}`))
+        return error(new NetworkError(`unexpected status: ${response.status}, message: ${await response.text()}`))
       }
       if (!response.body) {
         return error(new NetworkError('missing response body'))
