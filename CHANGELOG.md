@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.10](https://github.com/storacha/js-indexing-service-client/compare/v2.6.9...v2.6.10) (2025-12-03)
+
+
+### Bug Fixes
+
+* include response body in error ([#42](https://github.com/storacha/js-indexing-service-client/issues/42)) ([c2dd993](https://github.com/storacha/js-indexing-service-client/commit/c2dd9936c9c2adf24d94e1590bb23f71b97983b6))
+
 ## [2.6.9](https://github.com/storacha/js-indexing-service-client/compare/v2.6.8...v2.6.9) (2025-10-30)
 
 
